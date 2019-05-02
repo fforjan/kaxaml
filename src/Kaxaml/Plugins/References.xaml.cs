@@ -36,9 +36,23 @@ namespace Kaxaml.Plugins
         private readonly HashSet<Reference> _addedReferences = new HashSet<Reference>();
         private ObservableCollection<Reference> _allReferences;
 
+        static private readonly string[] SimCentralAssembllies = new[]
+        {
+            Environment.ExpandEnvironmentVariables(@"%LOCALAPPDATA%\SimSci\SimCentral\Client\SimCentral.Client.Shared.dll"),
+            Environment.ExpandEnvironmentVariables(@"C:\Program Files\SimSci\SimCentral\Client\SimCentral.Client.Shared.dll")
+        };
+
         public ReferencesViewModel()
         {
             this.AllReferences = new ObservableCollection<Reference>();
+
+            foreach (var file in SimCentralAssembllies)
+            {
+                if (File.Exists(file))
+                {
+                    AddNewReferences(file);
+                }
+            }
         }
 
         public bool AddNewReferences(string fileName)
